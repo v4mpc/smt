@@ -8,14 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"updatedAt","CreatedAt"}, allowGetters = true)
 public abstract class BaseEntity {
 
 
@@ -24,21 +26,21 @@ public abstract class BaseEntity {
     private int id;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 
 
     @PrePersist
     protected void onCreate() {
-        setCreatedAt(LocalDateTime.now());
-        setUpdatedAt(LocalDateTime.now());
+        setCreatedAt(LocalDate.now());
+        setUpdatedAt(LocalDate.now());
     }
 
 
     @PreUpdate
     protected void onUpdate() {
-        setUpdatedAt(LocalDateTime.now());
+        setUpdatedAt(LocalDate.now());
     }
 }
