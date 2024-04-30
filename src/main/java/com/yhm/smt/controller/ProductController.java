@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final ProductRepository productRepository;
 
     @GetMapping
     public Page<Product> getAllProducts(Pageable pageable) {
@@ -33,14 +32,7 @@ public class ProductController {
 
     @PutMapping("{id}")
     public ResponseEntity<Product> update(@PathVariable int id, @RequestBody Product product) {
-        Product updateProduct = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not exist with id " + id));
-        updateProduct.setName(product.getName());
-        updateProduct.setBuyPrice(product.getBuyPrice());
-        updateProduct.setSalePrice(product.getSalePrice());
-        updateProduct.setUnitOfMeasure(product.getUnitOfMeasure());
-        updateProduct.setActive(product.getActive());
-        updateProduct.setDescription(product.getDescription());
-        productRepository.save(updateProduct);
-        return ResponseEntity.ok(updateProduct);
+        Product p = productService.update(product, id);
+        return ResponseEntity.ok(p);
     }
 }
