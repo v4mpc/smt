@@ -43,17 +43,8 @@ public class SaleController {
     }
 
 
-    @PostMapping("/stockOnhand/")
-    public ResponseEntity<String> createOrUpdateStockOnhand(@PathVariable int id) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        stockOnhandService.update(id, LocalDate.parse("2026-01-01",formatter),9.5f, TransactionType.CREDIT);
-        return ResponseEntity.ok("done");
-    }
 
 
-    @GetMapping("/stockOnhand/{id}")
-    public ResponseEntity<Float> getStockOnhand(@PathVariable int id) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return ResponseEntity.ok(stockOnhandService.get(id, LocalDate.parse("2023-03-15",formatter)));
-    }
+
+
 }

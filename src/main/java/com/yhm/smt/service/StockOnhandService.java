@@ -1,5 +1,6 @@
 package com.yhm.smt.service;
 
+import com.yhm.smt.domain.StockEvent;
 import com.yhm.smt.domain.TransactionType;
 import com.yhm.smt.entity.Product;
 import com.yhm.smt.entity.StockOnhand;
@@ -28,30 +29,30 @@ public class StockOnhandService {
     }
 
 
-    public void update(int productId, LocalDate stockDate, float quantity, TransactionType tx) {
+    public void update(StockEvent event) {
 
 //        TODO :: add check to for only active Products
 
-        Product dbProduct = productService.getProduct(productId);
-        Optional<StockOnhand> optionalStockOnhand = stockOnhandRepository.findFirstByProductIdOrderByCreatedAtDesc(productId);
+        Product dbProduct = productService.getProduct(event.getProductId());
+        Optional<StockOnhand> optionalStockOnhand = stockOnhandRepository.findFirstByProductIdOrderByCreatedAtDesc(event.getProductId());
         if (optionalStockOnhand.isEmpty()) {
             StockOnhand newStockOnHand = StockOnhand.builder()
-                    .quantity(quantity)
-                    .createdAt(stockDate)
+                    .quantity(event.getQuantity())
+                    .createdAt(event.getEventDate())
                     .product(dbProduct)
                     .build();
             save(newStockOnHand);
             return;
         }
         StockOnhand dbStockOnhand = optionalStockOnhand.get();
-        dbStockOnhand.setCreatedAt(stockDate);
-        if (TransactionType.CREDIT == tx) {
-            if (dbStockOnhand.getQuantity() < quantity) {
+        dbStockOnhand.setCreatedAt(event.getEventDate());
+        if (TransactionType.CREDIT == event.getTx()) {
+            if (dbStockOnhand.getQuantity() < event.getQuantity()) {
                 throw new BadRequestException("Quantity do decrease is greater than the current stock on hand");
             }
-            dbStockOnhand.setQuantity(dbStockOnhand.getQuantity() - quantity);
-        } else if (TransactionType.DEBIT == tx) {
-            dbStockOnhand.setQuantity(dbStockOnhand.getQuantity() + quantity);
+            dbStockOnhand.setQuantity(dbStockOnhand.getQuantity() - event.getQuantity());
+        } else if (TransactionType.DEBIT == event.getTx()) {
+            dbStockOnhand.setQuantity(dbStockOnhand.getQuantity() + event.getQuantity());
         } else {
             throw new BadRequestException("Unknown TransactionType");
         }
