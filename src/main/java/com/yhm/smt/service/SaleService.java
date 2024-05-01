@@ -45,19 +45,4 @@ public class SaleService {
         );
         stockOnhandService.update(sale.toStockEvent());
     }
-
-
-    public Sale update(Sale sale, int id) {
-        Sale updateSale = saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sale not exist with id " + id));
-        updateSale.setProductName(sale.getProductName());
-        updateSale.setBuyPrice(sale.getBuyPrice());
-        updateSale.setSalePrice(sale.getSalePrice());
-        updateSale.setQuantity(sale.getQuantity());
-        updateSale.setCreatedAt(sale.getCreatedAt());
-        updateSale.setDescription(sale.getDescription());
-        saleRepository.save(updateSale);
-
-
-        return updateSale;
-    }
 }

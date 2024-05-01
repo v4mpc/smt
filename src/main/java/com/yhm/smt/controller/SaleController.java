@@ -3,6 +3,7 @@ package com.yhm.smt.controller;
 
 import com.yhm.smt.domain.TransactionType;
 import com.yhm.smt.dto.AdjustDto;
+import com.yhm.smt.dto.SaleDto;
 import com.yhm.smt.entity.Sale;
 import com.yhm.smt.entity.StockOnhand;
 import com.yhm.smt.service.SaleService;
@@ -36,16 +37,6 @@ public class SaleController {
     public void save(@Valid @RequestBody SaleDto sale) {
         saleService.save(sale);
     }
-
-    @PutMapping("{id}")
-    public ResponseEntity<Sale> update(@PathVariable int id, @RequestBody Sale sale) {
-        Sale e = saleService.update(sale, id);
-        return ResponseEntity.ok(e);
-    }
-
-
-
-
 
 
 }

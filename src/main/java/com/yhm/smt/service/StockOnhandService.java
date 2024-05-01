@@ -2,6 +2,7 @@ package com.yhm.smt.service;
 
 import com.yhm.smt.domain.StockEvent;
 import com.yhm.smt.domain.TransactionType;
+import com.yhm.smt.dto.StockOnhandDto;
 import com.yhm.smt.entity.Product;
 import com.yhm.smt.entity.StockOnhand;
 import com.yhm.smt.exception.BadRequestException;
@@ -9,11 +10,14 @@ import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.StockOnhandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -67,7 +71,24 @@ public class StockOnhandService {
             return 0;
         }
         return optionalStockOnhand.get().getQuantity();
-
-
     }
+
+    public  StockOnhandDto toStockOnhandDto(Product product){
+        return StockOnhandDto.builder()
+                .product(product)
+                .stockOnhand(get(product.getId(),LocalDate.now()))
+                .build();
+    }
+
+
+    public Page<StockOnhandDto> findAll(Pageable pageable) {
+        Page<Product> productsPage = productService.findAll(pageable);
+        List<Product> products = productsPage.getContent();
+        Pageable productsPageable = productsPage.getPageable();
+        long productsTotal = productsPage.getTotalElements();
+        List<StockOnhandDto> soh=products.stream().map(this::toStockOnhandDto).toList();
+        return new PageImpl<>(soh,productsPageable,productsTotal);
+    }
+
+
 }
