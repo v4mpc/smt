@@ -2,6 +2,7 @@ package com.yhm.smt.controller;
 
 
 import com.yhm.smt.domain.TransactionType;
+import com.yhm.smt.dto.AdjustDto;
 import com.yhm.smt.entity.Sale;
 import com.yhm.smt.entity.StockOnhand;
 import com.yhm.smt.service.SaleService;
@@ -32,7 +33,7 @@ public class SaleController {
     }
 
     @PostMapping
-    public void save(@Valid @RequestBody Sale sale) {
+    public void save(@Valid @RequestBody SaleDto sale) {
         saleService.save(sale);
     }
 
