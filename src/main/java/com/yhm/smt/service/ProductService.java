@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -22,6 +24,10 @@ public class ProductService {
 
     public void save(Product product) {
         productRepository.save(product);
+    }
+
+    public Product getProduct(int productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not exist with id " + productId));
     }
 
 
