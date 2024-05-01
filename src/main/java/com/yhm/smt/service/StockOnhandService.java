@@ -59,7 +59,14 @@ public class StockOnhandService {
     }
 
 
-    public float get(int productId, LocalDate stockDate, float quantity, TransactionType tx){
-        return 0f;
+    public float get(int productId, LocalDate stockDate) {
+        Product dbProduct = productService.getProduct(productId);
+        Optional<StockOnhand> optionalStockOnhand = stockOnhandRepository.findFirstByProductIdAndCreatedAtLessThanEqualOrderByCreatedAtDesc(dbProduct.getId(), stockDate);
+        if (optionalStockOnhand.isEmpty()) {
+            return 0;
+        }
+        return optionalStockOnhand.get().getQuantity();
+
+
     }
 }
