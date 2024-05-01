@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +37,13 @@ public class SaleController {
     @PostMapping
     public void save(@Valid @RequestBody SaleDto sale) {
         saleService.save(sale);
+    }
+
+
+
+    @PostMapping("/bulk")
+    public void save(@Valid @RequestBody List<SaleDto> sales) {
+        saleService.save(sales);
     }
 
 

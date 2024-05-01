@@ -73,10 +73,10 @@ public class StockOnhandService {
         return optionalStockOnhand.get().getQuantity();
     }
 
-    public  StockOnhandDto toStockOnhandDto(Product product){
+    public StockOnhandDto toStockOnhandDto(Product product) {
         return StockOnhandDto.builder()
                 .product(product)
-                .stockOnhand(get(product.getId(),LocalDate.now()))
+                .stockOnhand(get(product.getId(), LocalDate.now()))
                 .build();
     }
 
@@ -86,8 +86,8 @@ public class StockOnhandService {
         List<Product> products = productsPage.getContent();
         Pageable productsPageable = productsPage.getPageable();
         long productsTotal = productsPage.getTotalElements();
-        List<StockOnhandDto> soh=products.stream().map(this::toStockOnhandDto).toList();
-        return new PageImpl<>(soh,productsPageable,productsTotal);
+        List<StockOnhandDto> soh = products.stream().map(this::toStockOnhandDto).toList();
+        return new PageImpl<>(soh, productsPageable, productsTotal);
     }
 
 
