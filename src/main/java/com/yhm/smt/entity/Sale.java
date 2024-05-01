@@ -19,7 +19,6 @@ import java.time.LocalDate;
 public class Sale extends BaseEntity {
 
 
-
     @Column(name = "product_name", length = Integer.MAX_VALUE)
     private String productName;
 
@@ -41,7 +40,6 @@ public class Sale extends BaseEntity {
     private Float quantity;
 
 
-
     @NotNull
     @Column(name = "sale_adjustment")
     private Float saleAdjustment;
@@ -50,6 +48,10 @@ public class Sale extends BaseEntity {
     @JsonIgnore(value = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
+
+
+    @Column(name = "is_sale")
+    private boolean isSale = true;
 
     @Override
     protected void onCreate() {

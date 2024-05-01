@@ -1,14 +1,9 @@
 package com.yhm.smt.service;
 
 
-import com.yhm.smt.domain.StockEvent;
-import com.yhm.smt.domain.TransactionType;
-import com.yhm.smt.dto.AdjustDto;
 import com.yhm.smt.dto.SaleDto;
 import com.yhm.smt.entity.Product;
 import com.yhm.smt.entity.Sale;
-import com.yhm.smt.exception.ResourceNotFoundException;
-import com.yhm.smt.repository.SaleRepository;
 import com.yhm.smt.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,8 +21,12 @@ public class SaleService {
     private final ProductService productService;
     private final StockOnhandService stockOnhandService;
 
-    public Page<Sale> findAll(Pageable pageable) {
-        return saleRepository.findAll(pageable);
+    public Page<Sale> findAllSales(Pageable pageable) {
+        return saleRepository.findByIsSale(true, pageable);
+    }
+
+    public Page<Sale> findAllBuys(Pageable pageable) {
+        return saleRepository.findByIsSale(false, pageable);
     }
 
     @Transactional
@@ -42,6 +41,7 @@ public class SaleService {
                         .productName(dbProduct.getName())
                         .description(sale.getDescription())
                         .quantity(sale.getAdjustmentQuantity())
+                        .isSale(sale.isSale())
                         .createdAt(sale.getAdjustmentDate())
                         .build()
         );

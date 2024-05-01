@@ -19,5 +19,7 @@ public class SaleDto extends AdjustDto {
 
     private String description;
 
+    private boolean isSale;
+
 
 }
