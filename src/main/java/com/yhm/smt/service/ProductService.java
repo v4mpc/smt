@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,10 @@ public class ProductService {
 
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
     public void save(Product product) {

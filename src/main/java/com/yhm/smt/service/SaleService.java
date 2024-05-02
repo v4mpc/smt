@@ -41,7 +41,7 @@ public class SaleService {
                         .productName(dbProduct.getName())
                         .description(sale.getDescription())
                         .quantity(sale.getAdjustmentQuantity())
-                        .isSale(sale.isSale())
+                        .isSale(sale.getIsSale())
                         .createdAt(sale.getAdjustmentDate())
                         .build()
         );

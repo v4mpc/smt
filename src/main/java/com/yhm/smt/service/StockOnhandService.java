@@ -6,7 +6,6 @@ import com.yhm.smt.dto.StockOnhandDto;
 import com.yhm.smt.entity.Product;
 import com.yhm.smt.entity.StockOnhand;
 import com.yhm.smt.exception.BadRequestException;
-import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.StockOnhandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -88,6 +86,20 @@ public class StockOnhandService {
         long productsTotal = productsPage.getTotalElements();
         List<StockOnhandDto> soh = products.stream().map(this::toStockOnhandDto).toList();
         return new PageImpl<>(soh, productsPageable, productsTotal);
+    }
+
+
+    public boolean hasNonZeroStock(StockOnhandDto sohDto) {
+        return sohDto.getStockOnhand() > 0;
+    }
+
+
+    public List<StockOnhandDto> findAll(boolean nonZeroSoh) {
+        List<Product> products = productService.findAll();
+        if (nonZeroSoh) {
+            return products.stream().map(this::toStockOnhandDto).filter(this::hasNonZeroStock).toList();
+        }
+        return products.stream().map(this::toStockOnhandDto).toList();
     }
 
 

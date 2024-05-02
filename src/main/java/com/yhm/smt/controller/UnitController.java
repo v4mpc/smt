@@ -26,8 +26,10 @@ public class UnitController {
     }
 
     @PostMapping
-    public void save(@Valid @RequestBody Unit unit) {
+    public ResponseEntity<Unit> save(@Valid @RequestBody Unit unit) {
+
         unitService.save(unit);
+        return ResponseEntity.ok(unit);
     }
 
     @PutMapping("{id}")

@@ -21,7 +21,7 @@ public class SaleDto extends AdjustDto {
 
     private String description;
 
-    private boolean isSale;
+    private Boolean isSale;
 
     @Override
     public TransactionType getTx() {

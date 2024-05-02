@@ -16,11 +16,11 @@ import lombok.Setter;
 public class Unit extends BaseEntity {
 
     @NotNull
-    @Column(name = "code", length = Integer.MAX_VALUE)
+    @Column(name = "code")
     private String code;
 
     @NotNull
-    @Column(name = "name", length = Integer.MAX_VALUE)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "conversion_factor")

@@ -24,8 +24,9 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public void save(@Valid @RequestBody Expense expense) {
+    public ResponseEntity<Expense> save(@Valid @RequestBody Expense expense) {
         expenseService.save(expense);
+        return ResponseEntity.ok(expense);
     }
 
     @PutMapping("{id}")

@@ -26,7 +26,7 @@ public class UnitService {
 
     public Unit update(Unit unit, int id) {
         Unit updateUnit = unitRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Unit not exist with id " + id));
-        updateUnit.setName(unit.getName());
+        updateUnit.setCode(unit.getCode());
         updateUnit.setName(unit.getName());
         unitRepository.save(updateUnit);
         return updateUnit;
