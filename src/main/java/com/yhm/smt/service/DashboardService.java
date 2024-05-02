@@ -1,0 +1,106 @@
+package com.yhm.smt.service;
+
+
+import com.yhm.smt.dto.DashboardDto;
+import com.yhm.smt.entity.Expense;
+import com.yhm.smt.util.DateUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import com.yhm.smt.entity.Sale;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@Service
+@RequiredArgsConstructor
+public class DashboardService {
+
+    private final SaleService saleService;
+    private final ExpenseService expenseService;
+    private final ProductService productService;
+    private final StockOnhandService stockOnhandService;
+
+
+    public List<Sale> getSales(YearMonth yearMonth) {
+        return saleService.findByMonthAndYear(yearMonth.getMonthValue(), yearMonth.getYear());
+    }
+
+
+    public List<Expense> getExpenses(YearMonth yearMonth) {
+        return expenseService.findByMonthAndYear(yearMonth.getMonthValue(), yearMonth.getYear());
+    }
+
+    public Float calculateIndividualProfit(Sale sale) {
+        return ((sale.getSalePrice() - sale.getBuyPrice()) + sale.getSaleAdjustment()) * sale.getQuantity();
+
+    }
+
+
+    public Float getTotalProfit(List<Sale> sales) {
+        return sales.stream().map(this::calculateIndividualProfit).reduce(0F, Float::sum);
+    }
+
+    public Float getTotalSales(List<Sale> sales) {
+        return sales.stream().map(s -> (s.getQuantity() * s.getSalePrice())).reduce(0F, Float::sum);
+    }
+
+    public Float getTotalExpenses(List<Expense> expenses) {
+        return expenses.stream().map(Expense::getAmount).reduce(0F, Float::sum);
+    }
+
+
+    public Float getQuantitySold(List<Sale> sales) {
+        return sales.stream().map(Sale::getQuantity).reduce(0F, Float::sum);
+    }
+
+    public List<Sale> getTopSales(List<Sale> sales) {
+        return sales.stream().sorted(Comparator.comparing(Sale::getQuantity)).limit(10).toList();
+    }
+
+
+    public List<Expense> getTopExpenses(List<Expense> expenses) {
+        return expenses.stream().sorted(Comparator.comparing(Expense::getAmount)).limit(10).toList();
+    }
+
+    public List<String> getLabel(Integer daysInMonth, String monthMMM) {
+        return Stream.iterate(1, n -> n <= daysInMonth, n -> n + 1).map(d -> d + " " + monthMMM).toList();
+    }
+
+    public List<Float> getSalesTrend(List<Sale> sales, Integer daysInMonth, YearMonth yearMonth) {
+        List<LocalDate> localDates = DateUtil.getLocalDateList(daysInMonth, yearMonth);
+        return localDates.stream().map((d) -> sales.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(Sale::getQuantity).reduce(0F, Float::sum)).toList();
+
+    }
+
+
+    public List<Float> getExpensesTrend(List<Expense> expenses, Integer daysInMonth, YearMonth yearMonth) {
+        List<LocalDate> localDates = DateUtil.getLocalDateList(daysInMonth, yearMonth);
+        return localDates.stream().map((d) -> expenses.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(Expense::getAmount).reduce(0F, Float::sum)).toList();
+
+    }
+
+    public DashboardDto getMetrics(YearMonth yearMonth) {
+
+        List<Expense> expenses = getExpenses(yearMonth);
+        List<Sale> sales = getSales(yearMonth);
+        Integer daysInMonth = DateUtil.getDaysInMonth(yearMonth);
+        String monthMMM = DateUtil.getMMM(yearMonth);
+        return DashboardDto.builder()
+                .totalSales(getTotalSales(sales))
+                .totalExpense(getTotalExpenses(expenses))
+                .totalProfit(getTotalProfit(sales))
+                .productsSold(getQuantitySold(sales))
+                .topSales(getTopSales(sales))
+                .topExpenses(getTopExpenses(expenses))
+                .chartLabel(getLabel(daysInMonth, monthMMM))
+                .salesChartData(getSalesTrend(sales, daysInMonth, yearMonth))
+                .expensesChartData(getExpensesTrend(expenses, daysInMonth, yearMonth))
+                .build();
+    }
+
+
+}

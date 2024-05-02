@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,11 @@ public class SaleService {
 
     public Page<Sale> findByIsSale(boolean isSale, Pageable pageable) {
         return saleRepository.findByIsSale(isSale, pageable);
+    }
+
+    public List<Sale> findByMonthAndYear(int month, int year){
+//        TODO :: filter only those with is_sale=true;
+        return saleRepository.findByMonthAndYear(month,year);
     }
 
     @Transactional

@@ -2,6 +2,7 @@ package com.yhm.smt.service;
 
 import com.yhm.smt.entity.Expense;
 import com.yhm.smt.entity.Product;
+import com.yhm.smt.entity.Sale;
 import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.ExpenseRepository;
 import com.yhm.smt.repository.ProductRepository;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +36,10 @@ public class ExpenseService {
         updateExpense.setDescription(expense.getDescription());
         expenseRepository.save(updateExpense);
         return updateExpense;
+    }
+
+
+    public List<Expense> findByMonthAndYear(int month, int year){
+        return expenseRepository.findByMonthAndYear(month,year);
     }
 }
