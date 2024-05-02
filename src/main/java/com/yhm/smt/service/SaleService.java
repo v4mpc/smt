@@ -25,8 +25,8 @@ public class SaleService {
         return saleRepository.findByIsSale(true, pageable);
     }
 
-    public Page<Sale> findAllBuys(Pageable pageable) {
-        return saleRepository.findByIsSale(false, pageable);
+    public Page<Sale> findByIsSale(boolean isSale, Pageable pageable) {
+        return saleRepository.findByIsSale(isSale, pageable);
     }
 
     @Transactional

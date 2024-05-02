@@ -21,13 +21,15 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> getAllProducts(Pageable pageable) {
-        return productService.findAll(pageable);
+    public Page<Product> getAllProducts(@RequestParam(value = "name", defaultValue = "%") String name,Pageable pageable) {
+
+        return productService.findByName(name,pageable);
     }
 
     @PostMapping
-    public void save(@Valid @RequestBody Product product) {
+    public ResponseEntity<Product> save(@Valid @RequestBody Product product) {
         productService.save(product);
+        return ResponseEntity.ok(product);
     }
 
     @PutMapping("{id}")

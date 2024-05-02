@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Validated
 @RequestMapping(path = {"/units"})
@@ -23,6 +25,12 @@ public class UnitController {
     @GetMapping
     public Page<Unit> getAllUnits(Pageable pageable) {
         return unitService.findAll(pageable);
+    }
+
+
+    @GetMapping("/all")
+    public List<Unit> getAllUnits() {
+        return unitService.findAll();
     }
 
     @PostMapping

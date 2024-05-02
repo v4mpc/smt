@@ -6,10 +6,13 @@ import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,16 @@ public class ProductService {
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+
+    public Page<Product> findByName(String name, Pageable pageable) {
+        if (Objects.equals(name, "%")) {
+            Sort sort = Sort.by(Sort.Direction.ASC, "name");
+            PageRequest newPageable=PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),sort);
+            return productRepository.findAll(newPageable);
+        }
+        return productRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name, pageable);
+    }
+
 
     public List<Product> findAll() {
         return productRepository.findAll();
