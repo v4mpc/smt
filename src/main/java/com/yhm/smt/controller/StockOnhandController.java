@@ -28,9 +28,9 @@ public class StockOnhandController {
 
 
     @PutMapping("/adjust")
-    public ResponseEntity<String> adjustStockOnhand(@RequestBody AdjustDto adjustment) {
+    public ResponseEntity<AdjustDto> adjustStockOnhand(@RequestBody AdjustDto adjustment) {
         stockOnhandService.update(adjustment.toStockEvent());
-        return ResponseEntity.ok("Adjusted");
+        return ResponseEntity.ok(adjustment);
     }
 
 
