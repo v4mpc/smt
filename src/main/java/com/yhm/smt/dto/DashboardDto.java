@@ -1,7 +1,6 @@
 package com.yhm.smt.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yhm.smt.entity.Expense;
 import com.yhm.smt.entity.Sale;
 import lombok.*;
@@ -16,8 +15,9 @@ import java.util.List;
 @Builder
 public class DashboardDto {
     private Float totalSales;
-    private Float totalExpense;
-    private Float totalProfit;
+    private Float totalExpenses;
+    private Float totalSalesProfit;
+    private Float totalNetProfit;
     private Float productsSold;
     private List<Sale> topSales;
     private List<Expense> topExpenses;

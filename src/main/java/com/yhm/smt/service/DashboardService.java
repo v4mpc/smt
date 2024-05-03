@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -58,12 +57,12 @@ public class DashboardService {
     }
 
     public List<Sale> getTopSales(List<Sale> sales) {
-        return sales.stream().sorted(Comparator.comparing(Sale::getQuantity)).limit(10).toList();
+        return sales.stream().sorted(Comparator.comparing(Sale::getQuantity).reversed()).limit(10).toList();
     }
 
 
     public List<Expense> getTopExpenses(List<Expense> expenses) {
-        return expenses.stream().sorted(Comparator.comparing(Expense::getAmount)).limit(10).toList();
+        return expenses.stream().sorted(Comparator.comparing(Expense::getAmount).reversed()).limit(10).toList();
     }
 
     public List<String> getLabel(Integer daysInMonth, String monthMMM) {
@@ -72,7 +71,7 @@ public class DashboardService {
 
     public List<Float> getSalesTrend(List<Sale> sales, Integer daysInMonth, YearMonth yearMonth) {
         List<LocalDate> localDates = DateUtil.getLocalDateList(daysInMonth, yearMonth);
-        return localDates.stream().map((d) -> sales.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(Sale::getQuantity).reduce(0F, Float::sum)).toList();
+        return localDates.stream().map((d) -> sales.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(sf->sf.getSalePrice()*sf.getQuantity()).reduce(0F, Float::sum)).toList();
 
     }
 
@@ -89,12 +88,17 @@ public class DashboardService {
         List<Sale> sales = getSales(yearMonth);
         Integer daysInMonth = DateUtil.getDaysInMonth(yearMonth);
         String monthMMM = DateUtil.getMMM(yearMonth);
+        Float totalExpenses=getTotalExpenses(expenses);
+        Float totalSalesProfit=getTotalProfit(sales);
+        Float netProfit=totalSalesProfit-totalExpenses;
+
         return DashboardDto.builder()
                 .totalSales(getTotalSales(sales))
-                .totalExpense(getTotalExpenses(expenses))
-                .totalProfit(getTotalProfit(sales))
+                .totalExpenses(totalExpenses)
+                .totalSalesProfit(getTotalProfit(sales))
                 .productsSold(getQuantitySold(sales))
                 .topSales(getTopSales(sales))
+                .totalNetProfit(netProfit)
                 .topExpenses(getTopExpenses(expenses))
                 .chartLabel(getLabel(daysInMonth, monthMMM))
                 .salesChartData(getSalesTrend(sales, daysInMonth, yearMonth))

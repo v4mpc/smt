@@ -13,7 +13,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 
     Page<Sale> findByIsSale(boolean isSale, Pageable pageable);
 
-    @Query("SELECT s FROM Sale s WHERE MONTH(s.createdAt) = :month AND YEAR(s.createdAt) = :year")
+    @Query("SELECT s FROM Sale s WHERE MONTH(s.createdAt) = :month AND YEAR(s.createdAt) = :year AND s.isSale=true")
     List<Sale> findByMonthAndYear(int month, int year);
 
 }
