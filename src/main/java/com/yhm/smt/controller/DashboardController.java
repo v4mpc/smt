@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping(path = {"/dashboard"})
+@RequestMapping(path = {"/api/dashboard"})
 @RequiredArgsConstructor
 public class DashboardController {
 

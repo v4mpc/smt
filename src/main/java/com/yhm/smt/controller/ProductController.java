@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping(path = {"/products"})
+@RequestMapping(path = {"/api/products"})
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;

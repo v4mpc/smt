@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping(path = {"/units"})
+@RequestMapping(path = {"/api/units"})
 @RequiredArgsConstructor
 public class UnitController {
     private final UnitService unitService;

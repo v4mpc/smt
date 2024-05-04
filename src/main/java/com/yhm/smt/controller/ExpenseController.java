@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
-@RequestMapping(path = {"/expenses"})
+@RequestMapping(path = {"/api/expenses"})
 @RequiredArgsConstructor
 public class ExpenseController {
     private final ExpenseService expenseService;

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping(path = {"/sales"})
+@RequestMapping(path = {"/api/sales"})
 @RequiredArgsConstructor
 public class SaleController {
     private final SaleService saleService;
