@@ -36,3 +36,7 @@ build/
 
 #### sqlite ####
 *.sqlite3
+
+*.html
+*.css
+*.js
