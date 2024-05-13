@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 UI_HOME_FOLDER="/Users/v4mpc/repo/smt-ui"
 UI_DIST_FOLDER="${UI_HOME_FOLDER}/dist"
 BACKEND_STATIC_FOLDER="/Users/v4mpc/repo/smt/src/main/resources/static"
