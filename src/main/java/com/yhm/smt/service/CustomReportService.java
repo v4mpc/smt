@@ -1,6 +1,7 @@
 package com.yhm.smt.service;
 
 
+import com.yhm.smt.dto.ReportFilterRequest;
 import com.yhm.smt.entity.CustomReport;
 import com.yhm.smt.entity.Unit;
 import com.yhm.smt.exception.ResourceNotFoundException;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +20,11 @@ public class CustomReportService {
 
     public List<CustomReport> findAll() {
         return customReportRepository.findAll();
+    }
+
+    public List<ReportFilterRequest> fetchData(ReportFilterRequest filterOptions){
+
+        return List.of(filterOptions);
     }
 
     public void save(CustomReport customReport) {

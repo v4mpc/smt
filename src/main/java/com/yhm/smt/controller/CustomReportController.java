@@ -1,17 +1,20 @@
 package com.yhm.smt.controller;
 
 
+import com.yhm.smt.dto.ReportFilterRequest;
 import com.yhm.smt.entity.CustomReport;
 import com.yhm.smt.entity.Unit;
 import com.yhm.smt.service.CustomReportService;
 import com.yhm.smt.service.UnitService;
 import jakarta.validation.Valid;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -21,8 +24,14 @@ public class CustomReportController {
     private final CustomReportService customReportService;
 
     @GetMapping("")
-    public List<CustomReport> getAllUnits() {
+    public List<CustomReport> getAllReports() {
         return customReportService.findAll();
+    }
+
+
+    @PostMapping("fetch-report")
+    public List<ReportFilterRequest> fetchReportData(@RequestBody ReportFilterRequest reportFilterRequest) {
+        return customReportService.fetchData(reportFilterRequest);
     }
 
     @PostMapping

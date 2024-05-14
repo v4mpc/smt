@@ -2,6 +2,7 @@ package com.yhm.smt.controller;
 
 
 import com.yhm.smt.entity.Product;
+import com.yhm.smt.entity.Unit;
 import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.ProductRepository;
 import com.yhm.smt.service.ProductService;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Validated
 @RequestMapping(path = {"/api/products"})
@@ -21,9 +24,9 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> getAllProducts(@RequestParam(value = "name", defaultValue = "%") String name,Pageable pageable) {
+    public Page<Product> getAllProducts(@RequestParam(value = "name", defaultValue = "%") String name, Pageable pageable) {
 
-        return productService.findByName(name,pageable);
+        return productService.findByName(name, pageable);
     }
 
     @PostMapping
@@ -36,5 +39,11 @@ public class ProductController {
     public ResponseEntity<Product> update(@PathVariable int id, @RequestBody Product product) {
         Product p = productService.update(product, id);
         return ResponseEntity.ok(p);
+    }
+
+
+    @GetMapping("/all")
+    public List<Product> getAllProductsNoPagination() {
+        return productService.findAllNoPage();
     }
 }

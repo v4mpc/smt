@@ -25,6 +25,9 @@ public class ProductService {
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+    public List<Product> findAllNoPage() {
+        return productRepository.findAll();
+    }
 
     public Page<Product> findByName(String name, Pageable pageable) {
         if (Objects.equals(name, "%")) {
