@@ -30,7 +30,7 @@ public class CustomReportController {
 
 
     @PostMapping("fetch-report")
-    public List<ReportFilterRequest> fetchReportData(@RequestBody ReportFilterRequest reportFilterRequest) {
+    public List<Map<String, Object>> fetchReportData(@RequestBody ReportFilterRequest reportFilterRequest) {
         return customReportService.fetchData(reportFilterRequest);
     }
 
