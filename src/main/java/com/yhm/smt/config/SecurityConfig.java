@@ -28,22 +28,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
 
     private final JpaUserDetailsService jpaUserDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .userDetailsService(jpaUserDetailsService)
-                .authorizeHttpRequests(c -> c.requestMatchers("/api/auth/login").permitAll()
-                        .anyRequest().authenticated()
-                );
-        return http.build();
+                .authorizeHttpRequests(c -> c.requestMatchers("/api/auth/login").permitAll().anyRequest().permitAll())
+                .build();
+
     }
 
 
-
-
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,PasswordEncoder passwordEncoder){
-        DaoAuthenticationProvider authenticationProvider= new DaoAuthenticationProvider();
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
 
@@ -51,18 +51,10 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withUsername("admin")
-//                .password("12345678")
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }
