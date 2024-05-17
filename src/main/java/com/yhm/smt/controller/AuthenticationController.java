@@ -17,10 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = {"/api/auth"})
@@ -45,6 +45,16 @@ public class AuthenticationController {
     }
 
 
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Boolean>> checkAuthStatus(HttpServletRequest request) {
+        Map<String, Boolean> authStatus = new HashMap<>();
+        if (request.getSession(false) != null && request.getSession(false).getAttribute("user") != null) {
+            authStatus.put("isAuthenticated", true);
+        } else {
+            authStatus.put("isAuthenticated", true);
+        }
+        return ResponseEntity.ok(authStatus);
+    }
 
 
     @PostMapping("/logout")
