@@ -31,12 +31,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .userDetailsService(jpaUserDetailsService)
-                .authorizeHttpRequests(c -> c.requestMatchers("/api/auth/login").permitAll().anyRequest().permitAll())
-                .build();
+                http.cors(AbstractHttpConfigurer::disable);
+                http.userDetailsService(jpaUserDetailsService);
+                http.authorizeHttpRequests(c -> c.requestMatchers("/api/auth/login").permitAll().anyRequest().authenticated());
+                return http.build();
 
     }
 
