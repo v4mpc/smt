@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  application:
+    name: smt
+  datasource:
+    url: jdbc:postgresql://${POSTGRESQL_HOST}}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}
+    username: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+        format_sql: true
+
+server:
+  compression:
+    enabled: true
+    min-response-size: 1024
+  http2:
+    enabled: true
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+  port: ${SERVER_PORT}
+
+
+
+
+
+
+
+
+

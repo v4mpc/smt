@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  smt-db:
+    image: postgres:13.0-alpine
+    restart: always
+    container_name: smt-database
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=smt
+      - POSTGRES_PASSWORD=p@ssw0rd
+      - POSTGRES_DB=smt
+volumes:
+  postgres_data:
