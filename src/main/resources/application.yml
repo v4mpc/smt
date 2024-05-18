@@ -4,7 +4,7 @@ spring:
   application:
     name: smt
   datasource:
-    url: jdbc:postgresql://${POSTGRESQL_HOST}}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}
+    url: jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
   jpa:
