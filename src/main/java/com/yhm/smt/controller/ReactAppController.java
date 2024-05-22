@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ReactAppController {
-    @RequestMapping(value = "/{path:[^\\.]*}/")
+    @GetMapping(value = {"/", ""})
     public String index() {
-        return "index";
+        return "index.html";
 }
 }
