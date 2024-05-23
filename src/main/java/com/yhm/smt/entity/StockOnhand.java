@@ -16,14 +16,14 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "stock_on_hand", schema = "public",uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id","created_at"})})
+@Table(name = "stock_on_hand", schema = "public",indexes = {@Index(name = "idx_product_id_created_at", columnList = "product_id, created_at")},uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id","created_at"})})
 public class StockOnhand extends BaseEntity {
 
 
 
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
