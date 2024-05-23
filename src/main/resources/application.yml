@@ -18,6 +18,8 @@ spring:
       static-locations: classpath:/static/
 
 server:
+  tomcat:
+    max-http-form-post-size: 10MB
   compression:
     enabled: true
     min-response-size: 1024
