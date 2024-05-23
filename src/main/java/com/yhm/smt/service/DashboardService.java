@@ -2,7 +2,9 @@ package com.yhm.smt.service;
 
 
 import com.yhm.smt.dto.DashboardDto;
+import com.yhm.smt.dto.StockOnhandDto;
 import com.yhm.smt.entity.Expense;
+import com.yhm.smt.entity.Product;
 import com.yhm.smt.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,14 @@ public class DashboardService {
 
     public List<Expense> getExpenses(YearMonth yearMonth) {
         return expenseService.findByMonthAndYear(yearMonth.getMonthValue(), yearMonth.getYear());
+    }
+
+
+    public Float calculateSellStock(YearMonth yearMonth) {
+
+        LocalDate lastDate = yearMonth.atEndOfMonth();
+        List<Product> products = productService.findAllNoPage();
+        return products.stream().map(p -> stockOnhandService.toStockOnhandDto(p, lastDate)).map(sohDto -> (sohDto.getProduct().getSalePrice() * sohDto.getStockOnhand())).reduce(0F, Float::sum);
     }
 
     public Float calculateIndividualProfit(Sale sale) {
@@ -71,7 +81,7 @@ public class DashboardService {
 
     public List<Float> getSalesTrend(List<Sale> sales, Integer daysInMonth, YearMonth yearMonth) {
         List<LocalDate> localDates = DateUtil.getLocalDateList(daysInMonth, yearMonth);
-        return localDates.stream().map((d) -> sales.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(sf->sf.getSalePrice()*sf.getQuantity()).reduce(0F, Float::sum)).toList();
+        return localDates.stream().map((d) -> sales.stream().filter(fp -> (fp.getCreatedAt().isEqual(d))).map(sf -> sf.getSalePrice() * sf.getQuantity()).reduce(0F, Float::sum)).toList();
 
     }
 
@@ -88,9 +98,9 @@ public class DashboardService {
         List<Sale> sales = getSales(yearMonth);
         Integer daysInMonth = DateUtil.getDaysInMonth(yearMonth);
         String monthMMM = DateUtil.getMMM(yearMonth);
-        Float totalExpenses=getTotalExpenses(expenses);
-        Float totalSalesProfit=getTotalProfit(sales);
-        Float netProfit=totalSalesProfit-totalExpenses;
+        Float totalExpenses = getTotalExpenses(expenses);
+        Float totalSalesProfit = getTotalProfit(sales);
+        Float netProfit = totalSalesProfit - totalExpenses;
 
         return DashboardDto.builder()
                 .totalSales(getTotalSales(sales))
@@ -103,6 +113,7 @@ public class DashboardService {
                 .chartLabel(getLabel(daysInMonth, monthMMM))
                 .salesChartData(getSalesTrend(sales, daysInMonth, yearMonth))
                 .expensesChartData(getExpensesTrend(expenses, daysInMonth, yearMonth))
+                .totalSellStock(calculateSellStock(yearMonth))
                 .build();
     }
 

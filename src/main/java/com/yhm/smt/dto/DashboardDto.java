@@ -18,11 +18,13 @@ public class DashboardDto {
     private Float totalExpenses;
     private Float totalSalesProfit;
     private Float totalNetProfit;
+    private Float totalSellStock;
     private Float productsSold;
     private List<Sale> topSales;
     private List<Expense> topExpenses;
     private List<String> chartLabel;
     private List<Float> salesChartData;
     private List<Float> expensesChartData;
+
 
 }
