@@ -10,6 +10,7 @@ import com.yhm.smt.dto.ReportFilterRequest;
 import com.yhm.smt.entity.CustomReport;
 import com.yhm.smt.exception.ResourceNotFoundException;
 import com.yhm.smt.repository.CustomReportRepository;
+import com.yhm.smt.util.QueryValidatorUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,10 @@ public class CustomReportService {
 
 
     public List<Map<String, Object>> executeQueryWithColumnNames(String queryString) {
+
+        if (!QueryValidatorUtil.isValidSelectQuery(queryString)) {
+            throw new IllegalArgumentException("Invalid query. Only SELECT queries are allowed.");
+        }
         return jdbcTemplate.query(queryString, new ResultSetExtractor<List<Map<String, Object>>>() {
             @Override
             public List<Map<String, Object>> extractData(ResultSet rs) {
