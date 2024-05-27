@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.yhm</groupId>
     <artifactId>smt</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>smt</name>
     <description>SMT backend</description>
     <properties>
