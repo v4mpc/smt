@@ -31,12 +31,3 @@ server:
         same-site: strict
       timeout: 600m
   port: ${SERVER_PORT}
-
-
-
-
-
-
-
-
-

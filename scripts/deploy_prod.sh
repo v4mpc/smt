@@ -20,9 +20,22 @@ cp "${UI_DIST_FOLDER}/index.html" ${BACKEND_TEMPLATES_FOLDER}
 
 echo "Building and Deploying to Production"
 
-cd /Users/v4mpc/repo/smt && ./mvnw clean package
+#cd /Users/v4mpc/repo/smt && ./mvnw spring-boot:build-image
+
+cd /Users/v4mpc/repo/smt/ &&  docker build -t smt:1.0.0 -f /Users/v4mpc/repo/smt/docker/Dockerfile .
 
 
-ssh vims-prod rm /root/repo/smt/smt-0.0.1-SNAPSHOT.jar
-scp /Users/v4mpc/repo/smt/target/smt-0.0.1-SNAPSHOT.jar vims-prod:/root/repo/smt
-ssh vims-prod /usr/bin/supervisorctl restart smt:smt_00
+docker save -o /Users/v4mpc/Downloads/smt.tar smt:1.0.0
+
+
+scp /Users/v4mpc/Downloads/smt.tar rootjsi:/tmp
+
+ssh rootjsi /usr/bin/docker load -i /tmp/smt.tar
+
+
+
+#
+#
+##ssh rootjsi rm /root/repo/smt/smt-1.0.0.jar
+#scp /Users/v4mpc/repo/smt/target/smt-1.0.0.jar rootjsi:/root/repo/smt
+##ssh rootjsi /usr/bin/supervisorctl restart smt:smt_00

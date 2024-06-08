@@ -1,6 +1,16 @@
 version: '3.7'
 
 services:
+
+  smt-app:
+    container_name: smt-application
+    image: vampc/smt:latest
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - nginx-proxy
+
   smt-db:
     image: postgres:13.0-alpine
     restart: always
@@ -10,8 +20,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=smt
-      - POSTGRES_PASSWORD=p@ssw0rd
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=smt
       - POSTGRES_DB=smt
+    networks:
+      - nginx-proxy
+
+
+networks:
+  nginx-proxy:
+    external: true
+
+
 volumes:
   postgres_data:
