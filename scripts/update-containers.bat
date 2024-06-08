@@ -1,4 +1,4 @@
-@echo off
+
 REM Define the path to the Docker Compose file
 set COMPOSE_DIR=C:\Users\nancy\repo\smt\docker
 

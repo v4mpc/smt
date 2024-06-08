@@ -5,7 +5,7 @@ services:
   smt-app:
     container_name: smt-application
     image: vampc/smt:latest
-    restart: always
+    restart:  unless-stopped
     ports:
       - 8080:8080
     networks:
@@ -13,7 +13,7 @@ services:
 
   smt-db:
     image: postgres:13.0-alpine
-    restart: always
+    restart:  unless-stopped
     container_name: smt-database
     ports:
       - 5432:5432
