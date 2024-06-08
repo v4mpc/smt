@@ -6,6 +6,9 @@ services:
     container_name: smt-application
     image: vampc/smt:latest
     restart:  unless-stopped
+    depends_on:
+      smt-db:
+        condition: service_healthy
     ports:
       - 8080:8080
     networks:
@@ -25,6 +28,11 @@ services:
       - POSTGRES_DB=smt
     networks:
       - nginx-proxy
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 networks:
